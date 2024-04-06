@@ -31,7 +31,7 @@ Install react with npm
 ### Frontend deployed link
 
 ```http
-  https://arba-api-v28s.onrender.com/
+  https://musical-cucurucho-aa032d.netlify.app/
 ```
 
 ## User Routes
