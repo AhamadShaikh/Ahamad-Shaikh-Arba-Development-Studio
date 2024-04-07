@@ -1,4 +1,4 @@
-import * as types from './actionType';
+import * as types from './actionTypes';
 
 export const fetchProducts = (token) => async (dispatch) => {
   dispatch({ type: types.FETCH_PRODUCTS_REQUEST });
