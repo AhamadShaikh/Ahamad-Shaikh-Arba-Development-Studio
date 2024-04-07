@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, useDisclosure } from "@chakra-ui/react"
+import { Box, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, useDisclosure, Text } from "@chakra-ui/react"
 import Navbar from '../Components/Navbar'
 import Slider from '../Components/Slider'
 import ProductsList from '../Components/ProductsList'
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 
 const HomePage = () => {
     const [avatar, setAvatar] = useState('')
@@ -81,6 +81,13 @@ const HomePage = () => {
             </Box>
             <Box>
                 {/* <Slider/> */}
+                <Button variant='ghost' colorScheme='blue' bg={'#00ABC5'} color={'white'} _hover={{
+                    bg: "#0189A3"
+                }}>
+                    <Link to={'/allProducts'}>
+                        <Text>All Products Page</Text>
+                    </Link>
+                </Button>
             </Box>
             <Box>
                 <ProductsList />

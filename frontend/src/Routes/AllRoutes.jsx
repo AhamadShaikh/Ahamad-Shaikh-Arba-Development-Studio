@@ -6,6 +6,7 @@ import HomePage from '../Pages/HomePage'
 import ProfilePage from '../Pages/ProfilePage'
 import PrivateRoute from '../Components/PrivateRoute'
 import MyStorePage from '../Pages/MyStorePage'
+import AllProductsPage from '../Pages/AllProductsPage'
 
 const AllRoutes = () => {
   return (
@@ -25,6 +26,11 @@ const AllRoutes = () => {
       <Route path={"/mystore"} element={
         <PrivateRoute>
           <MyStorePage />
+        </PrivateRoute>
+      } />
+      <Route path={"/allProducts"} element={
+        <PrivateRoute>
+          <AllProductsPage />
         </PrivateRoute>
       } />
     </Routes>
