@@ -4,6 +4,8 @@ import Navbar from '../Components/Navbar'
 import Slider from '../Components/Slider'
 import ProductsList from '../Components/ProductsList'
 import { useNavigate, Link } from "react-router-dom"
+import { useDispatch } from "react-redux"
+import { handleLogoutUser } from '../Redux/Auth/action'
 
 const HomePage = () => {
     const [avatar, setAvatar] = useState('')
@@ -12,30 +14,18 @@ const HomePage = () => {
     const permission = JSON.parse(localStorage.getItem('termsAndConditions'))
     const [termsAndConditions, setTermsAndConditions] = useState(permission)
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const handleLogout = async () => {
         let token = JSON.parse(localStorage.getItem("token"))
-        try {
-            const res = await fetch(
-                "https://arba-api-v28s.onrender.com/user/myuser",
-                {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-            if (res) {
-                localStorage.setItem('token', JSON.stringify(null))
-                localStorage.setItem('refreshToken', JSON.stringify(null))
-                localStorage.setItem('termsAndConditions', JSON.stringify(null))
-                alert("User Logged Out")
-                navigate("/")
-            }
-        } catch (error) {
-            console.log(error);
-        }
+
+        dispatch(handleLogoutUser()).then((res) => {
+            localStorage.setItem('token', JSON.stringify(null))
+            localStorage.setItem('refreshToken', JSON.stringify(null))
+            localStorage.setItem('termsAndConditions', JSON.stringify(null))
+            alert("User Logged Out")
+            navigate("/")
+        })
     }
 
 

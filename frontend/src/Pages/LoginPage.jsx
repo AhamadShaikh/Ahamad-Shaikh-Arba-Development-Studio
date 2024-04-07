@@ -13,6 +13,8 @@ import {
 import Signin from "../assest/Signup.png";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import logo from "../assest/logo.png"
+import { handleLogin } from "../Redux/Auth/action";
+import { useDispatch } from "react-redux"
 
 const initialLogin = {
     email: '',
@@ -22,6 +24,7 @@ const initialLogin = {
 export default function LoginPage() {
     const [loginData, setLoginData] = useState(initialLogin)
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const handleLoginChange = (e) => {
         const { type, value, name } = e.target
@@ -34,26 +37,15 @@ export default function LoginPage() {
             alert("Fill the credentials")
             return
         }
-        try {
-            let res = await fetch(`https://arba-api-v28s.onrender.com/user/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(loginData)
-            })
-            let data = await res.json()
+
+        dispatch(handleLogin(loginData)).then((data) => {
             if (data.token) {
                 localStorage.setItem('token', JSON.stringify(data.token))
                 localStorage.setItem('refreshToken', JSON.stringify(data.refreshToken))
                 alert("User logged in successfull")
                 navigate("/home")
-            }else{
-                alert(data.msg)
             }
-        } catch (error) {
-            console.log(error);
-        }
+        })
     }
     return (
         <Box
@@ -71,7 +63,7 @@ export default function LoginPage() {
             <Box width={["100%", "100%", "40%", "40%"]}>
 
                 <Stack pl={16} pr={16} mb={10} display={'flex'} justifyContent={'center'} alignItems={'center'}>
-                <Text m={0} fontSize="3xl" fontWeight="bold" fontFamily="body">Sign In</Text>
+                    <Text m={0} fontSize="3xl" fontWeight="bold" fontFamily="body">Sign In</Text>
                     <Text m={0} fontSize="3xl" fontWeight="bold" fontFamily="body">
                         <Image src={logo} alt="" h="100px" w="100px" />
                         Apna Mart
