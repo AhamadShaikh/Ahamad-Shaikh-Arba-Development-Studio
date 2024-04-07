@@ -31,7 +31,7 @@ Install react with npm
 ### Frontend deployed link
 
 ```http
-  https://reliable-praline-7a2b0a.netlify.app/
+ https://gleaming-tapioca-68f627.netlify.app/
 ```
 
 ## User Routes
