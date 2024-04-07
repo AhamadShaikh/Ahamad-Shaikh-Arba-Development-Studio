@@ -257,7 +257,7 @@ const ProfilePage = () => {
                     <FormControl>
                       <FormLabel>Old Password</FormLabel>
                       <Input
-                        type="password"
+                        type="text"
                         placeholder="Old password"
                         value={oldPassword}
                         onChange={(e) => setOldPassword(e.target.value)}
@@ -267,7 +267,7 @@ const ProfilePage = () => {
                     <FormControl mt={4}>
                       <FormLabel>New Password</FormLabel>
                       <Input
-                        type="password"
+                        type="text"
                         placeholder="New password"
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}

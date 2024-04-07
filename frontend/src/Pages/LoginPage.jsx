@@ -71,6 +71,7 @@ export default function LoginPage() {
             <Box width={["100%", "100%", "40%", "40%"]}>
 
                 <Stack pl={16} pr={16} mb={10} display={'flex'} justifyContent={'center'} alignItems={'center'}>
+                <Text m={0} fontSize="3xl" fontWeight="bold" fontFamily="body">Sign In</Text>
                     <Text m={0} fontSize="3xl" fontWeight="bold" fontFamily="body">
                         <Image src={logo} alt="" h="100px" w="100px" />
                         Apna Mart
@@ -123,7 +124,7 @@ export default function LoginPage() {
                                 Password{" "}
                             </FormLabel>
                             <Input
-                                type="password"
+                                type="text"
                                 size="sm"
                                 focusBorderColor="#00ABC5"
                                 text="sm"
