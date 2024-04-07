@@ -44,6 +44,7 @@ router.delete("/delete/:categoryId", middleware, async (req, res) => {
   const categoryId = req.params.categoryId;
   try {
     const category = await Category.findById(categoryId);
+    console.log(category);
     if (category.owner.toString() !== req.userId) {
       return res.status(403).send("Unauthorized");
     }

@@ -12,13 +12,14 @@ import {
 } from "@chakra-ui/react";
 import Signin from "../assest/Signup.png";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import logo from "../assest/logo.png"
 
 const initialLogin = {
     email: '',
     password: ''
 }
 
-export default function SignupPage() {
+export default function LoginPage() {
     const [loginData, setLoginData] = useState(initialLogin)
     const navigate = useNavigate()
 
@@ -29,6 +30,10 @@ export default function SignupPage() {
     }
 
     const handleLoginSubmit = async () => {
+        if (loginData.email === "" || loginData.password === "") {
+            alert("Fill the credentials")
+            return
+        }
         try {
             let res = await fetch(`https://arba-api-v28s.onrender.com/user/login`, {
                 method: 'POST',
@@ -38,10 +43,14 @@ export default function SignupPage() {
                 body: JSON.stringify(loginData)
             })
             let data = await res.json()
-            if (data) {
+            if (data.token) {
+                localStorage.setItem('token', JSON.stringify(data.token))
+                localStorage.setItem('refreshToken', JSON.stringify(data.refreshToken))
+                alert("User logged in successfull")
                 navigate("/home")
+            }else{
+                alert(data.msg)
             }
-            console.log(loginData);
         } catch (error) {
             console.log(error);
         }
@@ -61,8 +70,9 @@ export default function SignupPage() {
             </Stack>
             <Box width={["100%", "100%", "40%", "40%"]}>
 
-                <Stack pl={16} pr={16} mb={10}>
+                <Stack pl={16} pr={16} mb={10} display={'flex'} justifyContent={'center'} alignItems={'center'}>
                     <Text m={0} fontSize="3xl" fontWeight="bold" fontFamily="body">
+                        <Image src={logo} alt="" h="100px" w="100px" />
                         Apna Mart
                     </Text>
                     <Text
@@ -149,6 +159,30 @@ export default function SignupPage() {
                             boxShadow="lg"
                         >
                             Sign In
+                        </Button>
+                        <Button onClick={handleLoginSubmit}
+                            my={3}
+                            size="md"
+                            w={170}
+                            h={45}
+                            borderRadius="40px"
+                            bg="#00ABC5"
+                            color="white"
+                            border="0"
+                            fontWeight="400"
+                            fontFamily="body"
+                            fontSize="sm"
+                            cursor="pointer"
+                            _focus={{
+                                outline: "none"
+                            }}
+                            _hover={{
+                                bg: "#0189A3"
+                            }}
+                            boxShadow="lg"
+                            m={'10px'}
+                        >
+                            Forgot password
                         </Button>
                     </form>
                 </Stack>

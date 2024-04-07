@@ -4,8 +4,8 @@ import LoginPage from '../Pages/LoginPage'
 import { Route, Routes } from 'react-router-dom'
 import HomePage from '../Pages/HomePage'
 import ProfilePage from '../Pages/ProfilePage'
-import CartPage from '../Pages/CartPage'
 import PrivateRoute from '../Components/PrivateRoute'
+import MyStorePage from '../Pages/MyStorePage'
 
 const AllRoutes = () => {
   return (
@@ -17,8 +17,16 @@ const AllRoutes = () => {
           <HomePage />
         </PrivateRoute>
       } />
-      <Route path={"/profile"} element={<ProfilePage />} />
-      <Route path={"/cart"} element={<CartPage />} />
+      <Route path={"/profile"} element={
+        <PrivateRoute>
+          <ProfilePage />
+        </PrivateRoute>
+      } />
+      <Route path={"/mystore"} element={
+        <PrivateRoute>
+          <MyStorePage />
+        </PrivateRoute>
+      } />
     </Routes>
   )
 }

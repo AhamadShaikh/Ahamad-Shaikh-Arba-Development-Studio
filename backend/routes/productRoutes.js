@@ -47,7 +47,7 @@ router.delete("/delete/:productId", middleware, async (req, res) => {
     const productId = req.params.productId; 
     try {
         const product = await Product.findById(productId);
-        if (product.creator.toString() !== req.userId) { 
+        if (product.owner.toString() !== req.userId) { 
             return res.status(403).send("Unauthorized"); 
         }
         const deleteProduct = await Product.findByIdAndDelete(productId);

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Box, Button, FormControl, FormLabel, Image, Input, Stack, Text } from "@chakra-ui/react";
 import SignupImage from "../assest/Signup.png";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import logo from "../assest/logo.png"
 
 const initialSignup = {
     fullName: '',
@@ -21,18 +22,22 @@ export default function SignupPage() {
     };
 
     const handleSignupSubmit = async () => {
+        if(signupData.fullName==="" || signupData.userName==="" || signupData.email ==="" || signupData.password==="" || signupData.avatar===""){
+            alert("Fill user details")
+            return
+        }
         try {
             let res = await fetch(`https://arba-api-v28s.onrender.com/user/register`, {
                 method: 'POST',
-                headers:{
-                    'Content-Type':'application/json'
+                headers: {
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(signupData)
             });
             if (res) {
-                 navigate("/")
+                alert('User Registered Successfully.')
+                navigate("/")
             }
-            console.log(signupData);
         } catch (error) {
             console.log(error);
         }
@@ -53,8 +58,9 @@ export default function SignupPage() {
             </Stack>
             <Box width={["100%", "100%", "40%", "40%"]}>
 
-                <Stack pl={16} pr={16} mb={10}>
+                <Stack pl={16} pr={16} mb={10} display={'flex'} justifyContent={'center'} alignItems={'center'}>
                     <Text m={0} fontSize="3xl" fontWeight="bold" fontFamily="body">
+                        <Image src={logo} alt="" h="100px" w="100px" />
                         Apna Mart
                     </Text>
                     <Text

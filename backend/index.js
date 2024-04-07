@@ -24,7 +24,7 @@ const connection = async () => {
 
 app.use("/user", userRouter)
 app.use("/product", productRouter)
-// app.use("/category", categoryRouter)
+app.use("/category", categoryRouter)
 
 app.use(cors({
     origin: '*'
