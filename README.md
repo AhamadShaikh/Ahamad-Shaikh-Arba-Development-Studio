@@ -119,27 +119,27 @@ To deploy this project run
 
 ## Features
 
-#Sign up
+# Sign up
 
 Allows users to create a new account by providing necessary details such as username, email, and password.
 
-#Login
+# Login
 
 Enables users to log into their accounts using their credentials.
 
-#Products Page
+# Products Page
 
 Displays a page where users can browse and view available products.
 
-#Profile Change
+# Profile Change
 
 Allows users to update their profile information such as full name and avatar.
 
-#Password Change
+# Password Change
 
 Enables users to change their account password securely.
 
-#Terms and Conditions
+# Terms and Conditions
 
 Provides users with information about the terms and conditions governing the usage of the platform.
 
