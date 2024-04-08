@@ -10,9 +10,7 @@ const initialState = {
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
     case types.FETCH_CATEGORY_REQUEST:
-    case types.FETCH_PRODUCTS_REQUEST:
     case types.DELETE_CATEGORY_REQUEST:
-    case types.DELETE_PRODUCT_REQUEST:
       return {
         ...state,
         loading: true,
@@ -26,31 +24,55 @@ export const reducer = (state = initialState, action) => {
         loading: false,
       };
 
-    case types.FETCH_PRODUCTS_SUCCESS:
-      return {
-        ...state,
-        productsData: action.payload,
-        loading: false,
-      };
-
     case types.DELETE_CATEGORY_SUCCESS:
-    case types.DELETE_PRODUCT_SUCCESS:
       return {
         ...state,
         loading: false,
       };
 
     case types.FETCH_CATEGORY_FAILURE:
-    case types.FETCH_PRODUCTS_FAILURE:
     case types.DELETE_CATEGORY_FAILURE:
-    case types.DELETE_PRODUCT_FAILURE:
       return {
         ...state,
         loading: false,
         error: action.payload,
       };
 
-    default:
-      return state;
-  }
-};
+      case types.ADD_CATEGORY_REQUEST:
+        return {
+          ...state,
+          adding: true,
+          error: null,
+        };
+      case types.ADD_CATEGORY_SUCCESS:
+        return {
+          ...state,
+          adding: false,
+        };
+      case types.ADD_CATEGORY_FAILURE:
+        return {
+          ...state,
+          adding: false,
+          error: action.payload,
+        };
+      case types.EDIT_CATEGORY_REQUEST:
+        return {
+          ...state,
+          editing: true,
+          error: null,
+        };
+      case types.EDIT_CATEGORY_SUCCESS:
+        return {
+          ...state,
+          editing: false,
+        };
+      case types.EDIT_CATEGORY_FAILURE:
+        return {
+          ...state,
+          editing: false,
+          error: action.payload,
+        };
+      default:
+        return state;
+    }
+  };

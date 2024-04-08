@@ -3,50 +3,32 @@ import { Button, Box } from "@chakra-ui/react";
 import Navbar from '../Components/Navbar';
 import CategoryTable from '../Components/CategoryTable';
 import ProductsTable from '../Components/ProductsTable';
+import { deleteCategory, fetchCategories } from '../Redux/Category/action';
+import { useDispatch } from "react-redux"
+import { useSelector } from "react-redux"
+import { deleteProduct, fetchProducts } from '../Redux/Product/action';
 
 const MyStorePage = () => {
   const token = JSON.parse(localStorage.getItem("token"));
 
-  const [categoryData, setCategoryData] = useState([]);
-  const [productsData, setProductsData] = useState([]);
+  const dispatch = useDispatch()
+  const { categoryData, loading, error } = useSelector((store) => store.categoryReducer);
+
+  const { productsData } = useSelector((store) => store.productReducer);
   const [displayCategory, setDisplayCategory] = useState(false);
   const [displayProducts, setDisplayProducts] = useState(false);
 
   const handleCategory = async () => {
-    try {
-      let res = await fetch(`https://arba-api-v28s.onrender.com/category`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: `Bearer ${token}`
-        }
-      });
-      let data = await res.json();
-      console.log(data.data);
-      setCategoryData(data.data);
-      setDisplayCategory(true);
-      setDisplayProducts(false);
-    } catch (error) {
-      console.log(error);
-    }
+
+    dispatch(fetchCategories(token))
+    setDisplayCategory(true);
+    setDisplayProducts(false);
   };
 
   const handleProducts = async () => {
-    try {
-      let res = await fetch(`https://arba-api-v28s.onrender.com/product`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: `Bearer ${token}`
-        }
-      });
-      let data = await res.json();
-      setProductsData(data.data);
-      setDisplayCategory(false);
-      setDisplayProducts(true);
-    } catch (error) {
-      console.log(error);
-    }
+    dispatch(fetchProducts(token))
+    setDisplayCategory(false);
+    setDisplayProducts(true);
   };
 
   const handleRefreshCategory = async (val) => {
@@ -60,41 +42,19 @@ const MyStorePage = () => {
   const handleDelete = async (categoryId) => {
     const token = JSON.parse(localStorage.getItem("token"))
     console.log(categoryId);
-    try {
-      let res = await fetch(`https://arba-api-v28s.onrender.com/category/delete/${categoryId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: `Bearer ${token}`
-        }
-      });
-      if (res) {
-        alert("Category deleted")
-      }
+
+    dispatch(deleteCategory(categoryId, token)).then((res) => {
+      alert("Category successfully deleted")
       handleRefreshCategory()
-    } catch (error) {
-      console.log(error);
-    }
+    })
   };
 
   const handleDeleteProduct = async (productId) => {
-console.log(productId);
-    try {
-      const res = await fetch(`https://arba-api-v28s.onrender.com/product/delete/${productId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: `Bearer ${token}`
-        }
-      });
-      if (res) {
-        alert('Product deleted successfully.');
-      }
+    console.log(productId);
+    dispatch(deleteProduct(productId,token)).then((res)=>{
+      alert("Product successfully deleted")
       handleRefreshProducts()
-    } catch (error) {
-      console.log(error);
-      alert('An error occurred while deleting the product.');
-    }
+    })
   };
 
   return (
@@ -115,7 +75,7 @@ console.log(productId);
         </Button>
       </Box>
       <Box>
-        {displayCategory && <CategoryTable categoryData={categoryData} handleRefreshCategory={handleRefreshCategory} handleDelete={handleDelete} setCategoryData={setCategoryData} />}
+        {displayCategory && <CategoryTable categoryData={categoryData && categoryData} handleRefreshCategory={handleRefreshCategory} handleDelete={handleDelete} />}
         {displayProducts && <ProductsTable productsData={productsData} handleRefreshProducts={handleRefreshProducts} handleDeleteProduct={handleDeleteProduct} />}
       </Box>
     </div>

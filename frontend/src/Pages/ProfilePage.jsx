@@ -19,6 +19,8 @@ import {
   Input,
 } from "@chakra-ui/react";
 import Navbar from "../Components/Navbar";
+import { useDispatch,useSelector } from "react-redux"
+import { handleChangePassword, handleFetchUserData, handleUpdateProfile } from "../Redux/Profile/action";
 
 const initialChangeProfile = {
   fullName: '',
@@ -26,7 +28,7 @@ const initialChangeProfile = {
 }
 
 const ProfilePage = () => {
-  const [userData, setUserData] = useState(null);
+  // const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const { isOpen: isProfileOpen, onOpen: onProfileOpen, onClose: onProfileClose } = useDisclosure();
   const { isOpen: isPasswordOpen, onOpen: onPasswordOpen, onClose: onPasswordClose } = useDisclosure();
@@ -35,6 +37,12 @@ const ProfilePage = () => {
   const [newPassword, setNewPassword] = useState('');
   const initialRef = React.useRef(null)
   const finalRef = React.useRef(null)
+
+  const dispatch = useDispatch()
+
+  const { userData } = useSelector((store) => store.userReducer);
+
+
 
   const handleChangeProfile = (e) => {
     const { name, value } = e.target
@@ -52,23 +60,11 @@ const ProfilePage = () => {
       fullName: updateData.fullName,
       avatar: updateData.avatar
     }
-    try {
-      let res = await fetch(`https://arba-api-v28s.onrender.com/user/update-profile`, {
-        method: 'PATCH',
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(obj)
-      });
-      console.log(res);
-      if (res) {
-        alert("User successfully updated.");
-        onProfileClose();
-        fetchUserData();
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    dispatch(handleUpdateProfile(obj)).then(() => {
+      alert("User successfully updated.");
+      onProfileClose();
+      fetchUserData();
+    })
   }
 
   const handleChangePasswordSubmit = async () => {
@@ -77,48 +73,18 @@ const ProfilePage = () => {
       oldPassword,
       newPassword
     }
-    try {
-      let res = await fetch(`https://arba-api-v28s.onrender.com/user/change-password`, {
-        method: 'PATCH',
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(obj)
-      });
-      if (res) {
-        alert("Password changed successfully");
-        onPasswordClose();
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    dispatch(handleChangePassword(obj)).then(() => {
+      alert("Password successfully changed");
+      onPasswordClose();
+    })
   }
 
   const fetchUserData = async () => {
-    const token = JSON.parse(localStorage.getItem("token"));
-    console.log(token);
-    try {
-      const response = await fetch(
-        "https://arba-api-v28s.onrender.com/user/myuser",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch user data");
-      }
-      const userData = await response.json();
-      console.log(userData._id);
-      setUserData(userData);
+    dispatch(handleFetchUserData()).then(()=>{
       setLoading(false);
-    } catch (error) {
-      console.error("Error fetching user data:", error);
+    }).catch(()=>{
       setLoading(false);
-    }
+    })
   };
 
   useEffect(() => {

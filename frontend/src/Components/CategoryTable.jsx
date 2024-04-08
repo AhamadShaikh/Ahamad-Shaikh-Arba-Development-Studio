@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Flex, Input, Button, Table, Tr, Th, Thead, Tbody, Td, Box, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Text } from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux"
+import { handleAddCategory, handleEditCategory } from '../Redux/Category/action';
 
 const initialCategory = {
     name: '',
@@ -16,6 +18,8 @@ const CategoryTable = ({ categoryData, handleRefreshCategory, handleDelete }) =>
     const [filteredCategoryData, setFilteredCategoryData] = useState(categoryData);
     const [addcategoryData, setAddCategoryData] = useState(initialCategory)
     const [flag, setFlag] = useState(false)
+
+    const dispacth = useDispatch()
 
     const handleFilter = (value) => {
         if (value) {
@@ -40,29 +44,17 @@ const CategoryTable = ({ categoryData, handleRefreshCategory, handleDelete }) =>
         setEditCategory((prev) => ({ ...prev, [name]: value }))
     }
 
-    const handleEditCategorySubmit = async() => {
-        let obj={
-            name:editCategory.name,
-            slug:editCategory.slug,
-            image:editCategory.image
+    const handleEditCategorySubmit = async () => {
+        let obj = {
+            name: editCategory.name,
+            slug: editCategory.slug,
+            image: editCategory.image
         }
-        try {
-            let res = await fetch(`https://arba-api-v28s.onrender.com/category/update/${editCategory._id}`,{
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    authorization: `Bearer ${token}`
-                },
-                body: JSON.stringify(obj)
-            })
-            if(res){
-                alert("Category updated successfully")
-                handleCloseEditModal()
-                handleRefreshCategory()
-            }
-        } catch (error) {
-            console.log(error);
-        }
+        dispacth(handleEditCategory(editCategory._id, obj, token)).then((res) => {
+            alert("Category updated successfully")
+            handleCloseEditModal()
+            handleRefreshCategory()
+        })
     }
 
     const handleAddCategoryModal = async () => {
@@ -90,27 +82,11 @@ const CategoryTable = ({ categoryData, handleRefreshCategory, handleDelete }) =>
             alert('Fill in all category details.');
             return;
         }
-        try {
-            let res = await fetch(`https://arba-api-v28s.onrender.com/category/add`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    authorization: `Bearer ${token}`
-                },
-                body: JSON.stringify(addcategoryData)
-            });
-            console.log(res);
-            if (res.ok) {
-                alert('Category added successfully.');
-                handleRefreshCategory()
-            } else {
-                alert('Failed to add category.');
-            }
+        dispacth(handleAddCategory(addcategoryData, token)).then((res) => {
+            alert('Category added successfully.');
+            handleRefreshCategory()
             handleCloseAddModal();
-        } catch (error) {
-            console.log(error);
-            alert('An error occurred while adding the category.');
-        }
+        })
     };
 
 

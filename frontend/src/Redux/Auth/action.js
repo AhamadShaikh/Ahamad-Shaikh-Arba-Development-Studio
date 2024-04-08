@@ -20,7 +20,6 @@ export const handleSignUp = (signupData) => async (dispatch) => {
             body: JSON.stringify(signupData)
         });
         return res
-        dispatch()
     } catch (error) {
         console.log(error);
     }
@@ -40,6 +39,8 @@ export const handleLogin = (loginData) => async (dispatch) => {
         console.log(data);
         if (data.token) {
             dispatch({ type: SIGNIN_SUCCESS, payload: data.token })
+        }else{
+            alert("Wrong credentials")
         }
         return data;
     } catch (error) {

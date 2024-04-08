@@ -30,8 +30,11 @@ export default function SignupPage() {
             return
         }
         dispatch(handleSignUp(signupData)).then((res) => {
+            console.log(res);
             alert('User Registered Successfully.')
             navigate("/")
+        }).catch(()=>{
+            alert('Somthing wenn wrong.')
         })
     };
 

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Flex, Input, Button, Table, Tr, Th, Thead, Tbody, Td, Box, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Text } from "@chakra-ui/react";
+import { useDispatch } from "react-redux"
+import { handleAddProduct, handleEditProduct } from '../Redux/Product/action';
 
 const initialProduct = {
     title: '',
@@ -18,6 +20,8 @@ const ProductsTable = ({ productsData, handleRefreshProducts, handleDeleteProduc
     const [filteredProductsData, setFilteredProductsData] = useState(productsData);
     const [addProductData, setAddProductData] = useState(initialProduct);
     const [flagP, setFlagP] = useState(false);
+
+    const dispatch = useDispatch()
 
     const handleProductFilter = (value) => {
         if (value) {
@@ -43,26 +47,11 @@ const ProductsTable = ({ productsData, handleRefreshProducts, handleDeleteProduc
     };
 
     const handleEditProductSubmit = async () => {
-        try {
-            const res = await fetch(`https://arba-api-v28s.onrender.com/product/update/${editedProductId}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    authorization: `Bearer ${token}`
-                },
-                body: JSON.stringify(editProduct)
-            });
-            if (res) {
-                alert('Product updated successfully.');
-                handleCloseEditModal();
-                handleRefreshProducts();
-            } else {
-                alert('Failed to update product.');
-            }
-        } catch (error) {
-            console.log(error);
-            alert('An error occurred while updating the product.');
-        }
+        dispatch(handleEditProduct(editedProductId, editProduct, token)).then((res) => {
+            alert('Product updated successfully.');
+            handleCloseEditModal();
+            handleRefreshProducts();
+        })
     };
 
     const handleAddProductModal = () => {
@@ -84,26 +73,12 @@ const ProductsTable = ({ productsData, handleRefreshProducts, handleDeleteProduc
     };
 
     const handleAddProductSubmit = async () => {
-        try {
-            const res = await fetch(`https://arba-api-v28s.onrender.com/product/add`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    authorization: `Bearer ${token}`
-                },
-                body: JSON.stringify(addProductData)
-            });
-            if (res) {
-                alert('Product added successfully.');
-                handleRefreshProducts();
-            } else {
-                alert('Failed to add product.');
-            }
+
+        dispatch(handleAddProduct(addProductData, token)).then((res) => {
+            alert('Product added successfully.');
+            handleRefreshProducts();
             handleCloseAddModal();
-        } catch (error) {
-            console.log(error);
-            alert('An error occurred while adding the product.');
-        }
+        })
     };
 
 

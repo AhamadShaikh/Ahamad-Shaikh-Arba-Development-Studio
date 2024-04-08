@@ -39,6 +39,7 @@ export default function LoginPage() {
         }
 
         dispatch(handleLogin(loginData)).then((data) => {
+            console.log(data);
             if (data.token) {
                 localStorage.setItem('token', JSON.stringify(data.token))
                 localStorage.setItem('refreshToken', JSON.stringify(data.refreshToken))
