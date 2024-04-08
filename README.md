@@ -15,6 +15,9 @@ Install react with npm
   npm install react-router-dom
 ```
 ```bash
+  npm install react-redux
+```
+```bash
   npm install react-icons
 ```
 ```bash
@@ -148,7 +151,7 @@ Provides users with information about the terms and conditions governing the usa
 
 ## Tech Stack
 
-**Client:** React, Chakra-UI, react-router-dom
+**Client:** React, Chakra-UI, react-router-dom, React-Redux
 
 
 ## License
